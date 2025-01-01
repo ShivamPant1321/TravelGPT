@@ -24,6 +24,8 @@ import axios from "axios";
 import { doc, setDoc } from "firebase/firestore";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { db } from "@/service/firebaseconfig";
+import { useNavigate } from "react-router-dom";
+
 
 const CreateTrip = () => {
   const [place, setplace] = useState();
@@ -31,6 +33,8 @@ const CreateTrip = () => {
   const [openDialog, setopenDialog] = useState(false);
 
   const [loading, setloading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleInputChange = (name, value) => {
     setformData({
@@ -116,6 +120,7 @@ const CreateTrip = () => {
       id: docId,
     });
     setloading(false);
+    navigate("/view-trip/" + docId);
   };
 
   return (
@@ -200,7 +205,11 @@ const CreateTrip = () => {
       </div>
       <div className="my-10 justify-end flex">
         <Button disabled={loading} onClick={onGenerateTrip}>
-          {loading ? <AiOutlineLoading3Quarters className="h-7 w-7 animate-spin" /> : "Generate Trip"}
+          {loading ? (
+            <AiOutlineLoading3Quarters className="h-7 w-7 animate-spin" />
+          ) : (
+            "Generate Trip"
+          )}
         </Button>
       </div>
 
