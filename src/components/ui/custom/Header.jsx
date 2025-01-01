@@ -59,15 +59,24 @@ const Header = () => {
 
   return (
     <div className="p-2 shadow-sm flex justify-between items-center px-5">
-      <img className="w-48" src="/public/logo.png" alt="Logo" />
+      <a href="/">
+        <img className="w-48 cursor-pointer" src="/logo.png" alt="Logo" />
+      </a>
       <div>
         {users ? (
           <div className="flex items-center gap-3">
             {" "}
             {/* Fixed gap attribute */}
-            <Button variant="outline" className="rounded-full">
-              My Trips
-            </Button>
+            <a href="/create-trip">
+              <Button variant="outline" className="rounded-full">
+                + Create Trip
+              </Button>
+            </a>
+            <a href="/my-trips">
+              <Button variant="outline" className="rounded-full">
+                My Trips
+              </Button>
+            </a>
             <Popover>
               <PopoverTrigger>
                 <img
