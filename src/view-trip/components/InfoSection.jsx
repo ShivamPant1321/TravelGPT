@@ -2,17 +2,16 @@ import { Button } from "@/components/ui/button";
 import { GetPlaceDetails } from "@/service/GlobalApi";
 import React, { useEffect, useState } from "react";
 import { IoIosSend } from "react-icons/io";
+import { motion } from "framer-motion";
 
 const PHOTO_REF_URL =
   "https://places.googleapis.com/v1/{NAME}/media?maxHeightPx=1000&maxWidthPx=1000&key=" +
   import.meta.env.VITE_GOOGLE_PLACE_API_KEY;
 
 const InfoSection = ({ trip }) => {
-
-  const [photoUrl, setphotoUrl] = useState()
+  const [photoUrl, setPhotoUrl] = useState();
 
   useEffect(() => {
-    console.log("useEffect triggered, trip:", trip);
     if (trip) {
       GetPlacePhoto();
     }
@@ -22,50 +21,75 @@ const InfoSection = ({ trip }) => {
     const data = {
       textQuery: trip?.userSelection?.location || "Default Location",
     };
-    console.log("Fetching data with:", data);
-
     try {
       const result = await GetPlaceDetails(data).then((resp) => {
-        console.log(resp.data.places[0].photos[3].name);
-
         const photoUrl = PHOTO_REF_URL.replace(
           "{NAME}",
           resp.data.places[0].photos[3].name
         );
-        setphotoUrl(photoUrl);
+        setPhotoUrl(photoUrl);
       });
-      console.log("API response:", result.data);
     } catch (error) {
       console.error("Error fetching place photo:", error.message || error);
     }
   };
 
   return (
-    <div>
-      <img className="h-[340px] w-full object-cover rounded" src={photoUrl} alt="" />
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.9 }} 
+      animate={{ opacity: 1, scale: 1 }} 
+      transition={{ duration: 0.8 }} 
+      className="relative bg-gray-900 rounded-2xl shadow-2xl overflow-hidden"
+    >
+      {/* Background Image */}
+      <motion.img
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="h-[450px] w-full object-cover rounded-2xl brightness-75"
+        src={photoUrl ? photoUrl : "/placeholder.png"}
+        alt={trip?.userSelection?.location}
+      />
+      
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 rounded-2xl" />
 
-      <div className="flex justify-between items-center">
-        <div className="my-5 flex flex-col gap-2">
-          <h2 className="font-bold text-2xl">
-            {trip?.userSelection?.location}
-          </h2>
-          <div className="flex gap-5">
-            <h2 className="p-1 px-3 bg-gray-200 rounded-full text-gray-500 text-sm md:text-md ">
-              📆{trip.userSelection?.noOfDays} Day
-            </h2>
-            <h2 className="p-1 px-3 bg-gray-200 rounded-full text-gray-500 text-sm md:text-md">
-              💰{trip.userSelection?.budget} Budget
-            </h2>
-            <h2 className="p-1 px-3 bg-gray-200 rounded-full text-gray-500 text-sm md:text-md">
-              🥂 No. of Traveler: {trip.userSelection?.traveler}
-            </h2>
-          </div>
+      {/* Information Content */}
+      <motion.div 
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        className="absolute bottom-10 left-10 text-white space-y-4"
+      >
+        <h2 className="font-extrabold text-5xl drop-shadow-lg tracking-wide">
+          {trip?.userSelection?.location}
+        </h2>
+        <div className="flex space-x-4 text-lg">
+          <span className="bg-gray-800 bg-opacity-75 px-5 py-2 rounded-full shadow-lg">
+            📆 {trip?.userSelection?.noOfDays} Day
+          </span>
+          <span className="bg-gray-800 bg-opacity-75 px-5 py-2 rounded-full shadow-lg">
+            💰 {trip?.userSelection?.budget} Budget
+          </span>
+          <span className="bg-gray-800 bg-opacity-75 px-5 py-2 rounded-full shadow-lg">
+            🥂 {trip?.userSelection?.traveler} Traveler
+          </span>
         </div>
-        <Button>
-          <IoIosSend />
+      </motion.div>
+
+      {/* Action Button */}
+      <motion.div 
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="absolute top-6 right-6"
+      >
+        <Button className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 px-6 py-3 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+          <IoIosSend className="text-xl" />
+          Send
         </Button>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
