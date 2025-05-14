@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogTitle,              // added
 } from "@/components/ui/dialog";
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -240,6 +241,7 @@ const CreateTrip = () => {
       <Dialog open={openDialog} onOpenChange={setopenDialog}>
         <DialogContent className="max-w-sm rounded-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-white/40 dark:border-gray-700/40 shadow-lg">
           <DialogHeader className="text-center">
+            <DialogTitle className="sr-only">Sign In Required</DialogTitle>  {/* added */}
             <DialogDescription>
               <img 
                 className="w-40 mx-auto mb-2" 

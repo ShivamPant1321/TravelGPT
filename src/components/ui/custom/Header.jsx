@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
@@ -155,6 +156,7 @@ const Header = () => {
           <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogContent className="max-w-sm rounded-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-white/40 dark:border-gray-700/40 shadow-lg">
               <DialogHeader className="text-center">
+                <DialogTitle className="sr-only">Welcome to TravelGPT</DialogTitle>
                 <DialogDescription>
                   <img className="w-40 mx-auto mb-2"  src={theme === 'dark' ? "/logo-dark.png" : "/logo-light.png"}  alt="Logo" />
                   <div className="my-8 space-y-3">
