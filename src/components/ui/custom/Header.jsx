@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "../button";
 import {
   Popover,
@@ -83,13 +83,13 @@ const Header = () => {
     >
       <div className="flex justify-between items-center px-4 py-2">
         {/* Logo with theme sensitivity */}
-        <a href="/" className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img 
             className="h-9 cursor-pointer" 
             src={theme === 'dark' ? "/logo-dark.png" : "/logo-light.png"} 
             alt="Logo" 
           />
-        </a>
+        </Link>
 
         {/* Right Section */}
         <div className="flex items-center gap-3">
@@ -98,18 +98,18 @@ const Header = () => {
           
           {users ? (
             <div className="flex items-center gap-2">
-              <a href="/create-trip">
+              <Link to="/create-trip">
                 <Button variant="outline" size="sm" className="rounded-full px-3 py-1 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 hover:bg-blue-200 dark:hover:bg-blue-800/50 hover:text-blue-800 shadow-sm font-medium flex items-center gap-1 text-xs h-8">
                   <RiMapPinAddLine className="text-blue-600 dark:text-blue-400" />
                   <span className="hidden sm:inline">Create Trip</span>
                 </Button>
-              </a>
-              <a href="/my-trips">
+              </Link>
+              <Link to="/my-trips">
                 <Button variant="outline" size="sm" className="rounded-full px-3 py-1 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 text-pink-700 dark:text-pink-300 border-pink-200 dark:border-pink-800 hover:bg-pink-200 dark:hover:bg-pink-800/50 hover:text-pink-800 shadow-sm font-medium flex items-center gap-1 text-xs h-8">
                   <RiSuitcaseLine className="text-pink-600 dark:text-pink-400" />
                   <span className="hidden sm:inline">My Trips</span>
                 </Button>
-              </a>
+              </Link>
 
               {/* User Profile Popover */}
               <Popover>
