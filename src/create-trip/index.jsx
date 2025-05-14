@@ -22,6 +22,9 @@ import { doc, setDoc } from "firebase/firestore";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { db } from "@/service/firebaseconfig";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { IoLocationOutline, IoCalendarOutline, IoPersonOutline } from "react-icons/io5";
+import { useTheme } from "@/components/ui/theme-provider";
 
 const CreateTrip = () => {
   const [place, setplace] = useState();
@@ -29,6 +32,7 @@ const CreateTrip = () => {
   const [openDialog, setopenDialog] = useState(false);
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const handleInputChange = (name, value) => {
     setformData({
@@ -111,41 +115,155 @@ const CreateTrip = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-pink-100 to-blue-100">
-      <div className="bg-white m-3 bg-opacity-90 p-8 rounded-3xl shadow-2xl w-full max-w-5xl">
-        <h2 className="font-bold text-4xl text-gray-900 text-center">Plan Your Dream Trip ✈️🌍</h2>
-        <p className="mt-3 text-gray-600 text-lg text-center">Fill in the details and let our AI create a perfect itinerary for you!</p>
-        <div className="mt-10 flex flex-col gap-7">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700">Where do you want to go?</h2>
-            <Input placeholder="Enter your destination" type="text" value={formData.location || ""} onChange={(e) => handleInputChange("location", e.target.value)} className="border-gray-300 shadow-sm p-4 rounded-lg" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700">How many days?</h2>
-            <Input placeholder="Ex. 3" type="number" onChange={(e) => handleInputChange("noOfDays", e.target.value)} className="border-gray-300 shadow-sm p-4 rounded-lg" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700">Number of travelers?</h2>
-            <Input placeholder="Ex. 2" type="number" onChange={(e) => handleInputChange("traveler", e.target.value)} className="border-gray-300 shadow-sm p-4 rounded-lg" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700">Select your budget</h2>
-            <div className="grid grid-cols-3 gap-4">
-              {SelectBudgetOptions.map((item, index) => (
-                <div key={index} onClick={() => handleInputChange("budget", item.title)} className={`p-5 border rounded-lg cursor-pointer transition-all hover:shadow-lg hover:bg-blue-100 ${formData?.budget === item.title && "shadow-lg border-blue-600"}`}>
-                  <h2 className="text-4xl text-center">{item.icon}</h2>
-                  <h2 className="text-lg font-bold text-center">{item.title}</h2>
-                </div>
-              ))}
+    <div className="relative min-h-screen bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950 dark:via-purple-950 dark:to-pink-950">
+      <div className="absolute inset-0 bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm"></div>
+      
+      {/* Decorative Elements */}
+      <motion.div
+        className="absolute top-20 left-[10%] w-72 h-72 bg-indigo-200 dark:bg-indigo-700 opacity-20 rounded-full filter blur-3xl"
+        animate={{ 
+          scale: [1, 1.2, 1],
+          x: [0, 30, 0],
+          y: [0, -30, 0] 
+        }}
+        transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-20 right-[10%] w-80 h-80 bg-pink-200 dark:bg-pink-700 opacity-20 rounded-full filter blur-3xl"
+        animate={{ 
+          scale: [1, 0.8, 1],
+          x: [0, -20, 0],
+          y: [0, 20, 0] 
+        }}
+        transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
+      />
+      
+      <div className="relative container mx-auto py-16 px-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-3xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-8 sm:p-12 rounded-3xl shadow-xl border border-white/50 dark:border-gray-700/50"
+        >
+          <h2 className="font-bold text-3xl sm:text-4xl text-gray-900 dark:text-white text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+            Plan Your Dream Trip ✈️
+          </h2>
+          <p className="mt-3 text-gray-600 dark:text-gray-300 text-lg text-center">
+            Fill in the details and let our AI create a perfect itinerary for you!
+          </p>
+          
+          <div className="mt-10 space-y-8">
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-lg font-medium text-gray-700 dark:text-gray-200">
+                <IoLocationOutline className="text-indigo-500 dark:text-indigo-400" />
+                Where do you want to go?
+              </label>
+              <Input 
+                placeholder="Enter your destination" 
+                type="text" 
+                value={formData.location || ""} 
+                onChange={(e) => handleInputChange("location", e.target.value)} 
+                className="border-gray-200 dark:border-gray-700 shadow-sm rounded-xl p-6 text-lg focus-visible:ring-indigo-400 dark:bg-gray-800 dark:text-white"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-lg font-medium text-gray-700 dark:text-gray-200">
+                <IoCalendarOutline className="text-indigo-500 dark:text-indigo-400" />
+                How many days?
+              </label>
+              <Input 
+                placeholder="Ex. 3" 
+                type="number" 
+                onChange={(e) => handleInputChange("noOfDays", e.target.value)} 
+                className="border-gray-200 dark:border-gray-700 shadow-sm rounded-xl p-6 text-lg focus-visible:ring-indigo-400 dark:bg-gray-800 dark:text-white" 
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-lg font-medium text-gray-700 dark:text-gray-200">
+                <IoPersonOutline className="text-indigo-500 dark:text-indigo-400" />
+                Number of travelers?
+              </label>
+              <Input 
+                placeholder="Ex. 2" 
+                type="number" 
+                onChange={(e) => handleInputChange("traveler", e.target.value)} 
+                className="border-gray-200 dark:border-gray-700 shadow-sm rounded-xl p-6 text-lg focus-visible:ring-indigo-400 dark:bg-gray-800 dark:text-white" 
+              />
+            </div>
+            
+            <div className="space-y-4">
+              <label className="flex items-center gap-2 text-lg font-medium text-gray-700 dark:text-gray-200">
+                <span className="text-indigo-500 dark:text-indigo-400">💰</span>
+                Select your budget
+              </label>
+              <div className="grid grid-cols-3 gap-4">
+                {SelectBudgetOptions.map((item, index) => (
+                  <motion.div 
+                    key={index} 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleInputChange("budget", item.title)} 
+                    className={`p-5 border rounded-xl cursor-pointer transition-all hover:shadow-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/50 ${
+                      formData?.budget === item.title 
+                        ? "shadow-md border-indigo-400 dark:border-indigo-600 bg-indigo-50 dark:bg-indigo-900/50" 
+                        : "border-gray-200 dark:border-gray-700"
+                    }`}
+                  >
+                    <div className="text-4xl text-center mb-2">{item.icon}</div>
+                    <h2 className="text-lg font-bold text-center text-gray-800 dark:text-white">{item.title}</h2>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-10 flex justify-center">
-          <Button disabled={loading} onClick={onGenerateTrip} className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-2xl shadow-lg px-8 py-4 hover:opacity-90 transition flex items-center">
-            {loading ? <AiOutlineLoading3Quarters className="h-7 w-7 animate-spin" /> : "Generate My Trip"}
-          </Button>
-        </div>
+          
+          <div className="mt-12 flex justify-center">
+            <Button 
+              disabled={loading} 
+              onClick={onGenerateTrip} 
+              size="lg"
+              className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 dark:from-indigo-600 dark:to-purple-700 dark:hover:from-indigo-700 dark:hover:to-purple-800 text-white font-semibold rounded-xl shadow-lg px-8 py-6 hover:shadow-indigo-300/50 dark:hover:shadow-indigo-900/50 transition flex items-center gap-2 text-lg"
+            >
+              {loading ? (
+                <AiOutlineLoading3Quarters className="h-6 w-6 animate-spin" />
+              ) : (
+                <>Generate My Trip</>
+              )}
+            </Button>
+          </div>
+        </motion.div>
       </div>
+      
+      {/* Sign-in Dialog */}
+      <Dialog open={openDialog} onOpenChange={setopenDialog}>
+        <DialogContent className="max-w-sm rounded-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-white/40 dark:border-gray-700/40 shadow-lg">
+          <DialogHeader className="text-center">
+            <DialogDescription>
+              <img 
+                className="w-40 mx-auto mb-2" 
+                src={theme === 'dark' ? "/logo-dark.png" : "/logo-light.png"} 
+                alt="Logo" 
+              />
+              <div className="my-8 space-y-3">
+                <h2 className="font-bold text-2xl text-gray-800 dark:text-white">Sign In Required</h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Please sign in to create your personalized trip plan
+                </p>
+              </div>
+
+              <Button
+                onClick={login}
+                variant="outline"
+                className="w-full mt-2 flex items-center justify-center gap-3 py-6 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 rounded-xl shadow-sm transition-all"
+              >
+                <FcGoogle className="h-6 w-6" /> Continue with Google
+              </Button>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
