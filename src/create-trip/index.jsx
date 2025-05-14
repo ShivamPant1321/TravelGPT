@@ -20,7 +20,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { doc, setDoc } from "firebase/firestore";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { db } from "@/service/firebaseconfig";
+import { db } from "@/service/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { IoLocationOutline, IoCalendarOutline, IoPersonOutline } from "react-icons/io5";
